@@ -8,13 +8,6 @@ import { verify } from "crypto";
 
 configDotenv();
 const app = express();
-
-app.use((req, res, next) => {
-    console.log(`▶Received ${req.method} request to ${req.url}\n` , req.query , req.body  );
-    next();
-});
-
-
 app.use(morgan("dev"));
 app.use(bodyParser.json());
 
@@ -44,7 +37,12 @@ app.get("/webhooks", (req, res) => {
 });
 
 
-
+app.post("/webhooks", async (req, res) => {
+  const data = req.body;
+  const url = req.url;
+  console.log("# URL : " , url)
+  console.log("# DATA : ",data);
+})
 
 
 app.listen(process.env.PORT || 5000, () => {
