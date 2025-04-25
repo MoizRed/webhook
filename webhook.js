@@ -42,7 +42,7 @@ app.post("/webhooks", async (req, res) => {
   const url = req.url;
   console.log("# URL : " , url )
   console.log("# DATA : ",data );
-  console.log(data.entry.messaging)
+  console.log(data.entry[0].messaging)
 })
 
 
