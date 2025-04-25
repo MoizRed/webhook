@@ -40,8 +40,8 @@ app.get("/webhooks", (req, res) => {
 app.post("/webhooks", async (req, res) => {
   const data = req.body;
   const url = req.url;
-  console.log("# URL : " , url , { depth: null })
-  console.log("# DATA : ",data , { depth: null });
+  console.log("# URL : " , url , { depth: 55 })
+  console.log("# DATA : ",data , { depth: 55 });
 })
 
 
