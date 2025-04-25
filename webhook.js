@@ -1,92 +1,54 @@
-import express from "express"
-import axios from "axios"
-import morgan from "morgan"
-import bodyParser from "body-parser"
-import fs from "fs"
-import { configDotenv } from "dotenv"
-import { verify } from "crypto"
+import express from "express";
+import axios from "axios";
+import morgan from "morgan";
+import bodyParser from "body-parser";
+import fs from "fs";
+import { configDotenv } from "dotenv";
+import { verify } from "crypto";
 
 configDotenv();
-const app = express()
+const app = express();
 
-app.use(morgan("dev"))
-app.use(bodyParser.json())
-
-app.get("/" , (req , res)=>{
-    res.send("app is up and running")
-})
+app.use((req, res, next) => {
+    console.log(`▶Received ${req.method} request to ${req.url}\n` , req.query , req.body  );
+    next();
+});
 
 
-app.get("/webhooks" , (req , res)=>{
+app.use(morgan("dev"));
+app.use(bodyParser.json());
 
 
-    const query = req.query
-    console.log(query)
 
+app.get("/", (req, res) => {
+  res.send("app is up and running");
+});
 
-  
-   const mode = query["hub.mode"]
-   const token = query["hub.verify_token"]
-   const challenge = query["hub.challenge"]
+app.get("/webhooks", (req, res) => {
+  const query = req.query;
+  console.log(query);
 
-    if(mode && token){
-        if(mode =="subscribe" && token == process.env.VERIFY_TOKEN){
+  const mode = query["hub.mode"];
+  const token = query["hub.verify_token"];
+  const challenge = query["hub.challenge"]; 
 
-            res.status(200).send(challenge);
-
-    }else{
-        res.status(403).send("Forbidden")
+  if (mode && token) {
+    if (mode == "subscribe" && token == process.env.VERIFY_TOKEN) {
+      res.status(200).send(challenge);
+    } else {
+      res.status(403).send("Forbidden");
     }
-}
-    
-   console.log(mode , token , challenge)
+  }
+
+  console.log(mode, token, challenge , "env token " ,process.env.VERIFY_TOKEN);
+});
 
 
 
 
 
+app.listen(process.env.PORT || 5000, () => {
+  console.log(`Server is running on port ${process.env.PORT || 5000}`);
+});
 
-    
-})
-
-app.post("/webhook" , (req , res)=>{
-    
-
-    //query
-
-
-
-   
-})
-
-app.listen(process.env.PORT || 3000, () => {
-    console.log(`Server is running on port ${process.env.PORT || 3000}`)
-})
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-app.listen(5000 , ()=>{
-    console.log("\u{1F7EA} http://localhost:5000")
-})
 

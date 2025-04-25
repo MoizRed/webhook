@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon webhook.js",
-    "prod" : "node webhook.js"
+    "prod": "node webhook.js"
   },
   "author": "",
   "license": "ISC",
